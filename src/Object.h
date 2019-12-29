@@ -39,6 +39,8 @@ public:
 	inline void setX(float x) { this->x = x; };
 	inline void setY(float y) { this->y = y; };
 
+	inline void setWidth(float width) { this->width = width; };
+	inline void setHight(float height) { this->height = height; };
 
 
 };

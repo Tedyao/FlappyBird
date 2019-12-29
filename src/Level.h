@@ -5,6 +5,7 @@
 #include "vector"
 #include "Background.h"
 #include "Font.h"
+#include "GameOver.h"
 
 
 template<typename T>
@@ -31,12 +32,15 @@ private:
 	std::vector<position> pipes;
 	std::vector<position> tiles;
 	std::vector<fontStruct> scores;
+	std::vector<fontStruct> bestScores;
 	bool isGameOver;
 	Background bg;
 	Pipe pipe;
 	Bird bird;
 	Font font;
+	GameOver gameOverScreen;
 	float score;
+	int bestScore;
 public:
 	Level();
 	~Level();
@@ -54,6 +58,12 @@ public:
 	void reset();
 	bool isCollision();
 	bool gameOver();
+
+	void resetScores(std::vector<fontStruct>& scores);
+	void renderScores(std::vector<fontStruct>& scores);
+	void updateScores(std::vector<fontStruct>& scores, int score);
+
+	void createScores(std::vector<fontStruct>& scores, float X_POS, float Y_POS, float fontSize);
 
 	
 	inline std::vector<position> getPipes() const { return pipes; };

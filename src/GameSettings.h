@@ -29,6 +29,7 @@ struct fontStruct
 	float x;
 	float y;
 	int character;
+	float fontSize;
 
 };
 

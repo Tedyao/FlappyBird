@@ -30,6 +30,7 @@ void Object::render()
 
 	glm::mat4 trans = glm::mat4(1.0f);
 	shader.setUniformMat4f("rot_matrix", trans);
+
 	shader.setUniformMat4f("trans_matrix", trans);
 	trans = glm::ortho(-640.0f, 640.0f, -360.0f, 360.0f, -1.0f, 1.0f);
 	shader.setUniformMat4f("orth_matrix", trans);

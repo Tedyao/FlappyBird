@@ -5,12 +5,14 @@
 Level::Level()
 	:pipe(genObject<Pipe>(PIPE_WIDTH, PIPE_HEIGHT, "res/shaders/pipe.shader", "res/images/pipe.png")), bird(genObject<Bird>(BIRD_SIZE, BIRD_SIZE, "res/shaders/basic.shader", "res/images/bird.png")),
 	bg(genObject<Background>(BG_WIDTH, BG_HEIGHT, "res/shaders/pipe.shader", "res/images/bg.jpeg")), isGameOver(false),
-	font(genObject<Font>(FONT_SIZE, FONT_SIZE, "res/shaders/font.shader", "res/images/character.png")), score(0)
+	font(genObject<Font>(FONT_SIZE, FONT_SIZE, "res/shaders/font.shader", "res/images/character.png")), score(0.0f),
+	bestScore(0), gameOverScreen(genObject<GameOver>(800.0, 400.0, "res/shaders/pipe.shader", "res/images/gameover.png"))
 {
 	srand((int)time(0));
 	createBG();
 	createPipes();
 	createScores();
+	
 }
 
 Level::~Level()
@@ -32,7 +34,17 @@ void Level::render()
 void Level::update()
 {
 	if (isGameOver)
+	{
 		bird.fall();
+		if (score > bestScore)
+			bestScore = score;
+		resetScores(bestScores);
+		createScores(bestScores, 100.0f, -100.0f, 2 * FONT_SIZE);
+		updateScores(bestScores, bestScore);
+		renderScores(bestScores);
+		gameOverScreen.render();
+
+	}
 	else
 	{
 		updatePipes();
@@ -94,27 +106,7 @@ void Level::createPipes()
 
 void Level::createScores()
 {
-	float pos = SCORE_X_POSITION;
-	for (int i = 0; i < FONT_LENGTH; i++)
-	{
-		
-		if (i == FONT_LENGTH - 1)
-		{
-			scores.push_back({ pos, SCORE_Y_POSITION, 10 });
-		}
-		else if (i == FONT_LENGTH - 2)
-		{
-			scores.push_back({ pos, SCORE_Y_POSITION, 0 });
-
-		}
-		else
-		{
-			scores.push_back({ pos, SCORE_Y_POSITION, 24 });
-
-		}
-		
-		pos += FONT_DISTANCE;
-	}
+	createScores(scores, SCORE_X_POSITION, SCORE_Y_POSITION, FONT_SIZE);
 
 }
 
@@ -140,21 +132,7 @@ void Level::updatePipes()
 
 void Level::updateScores()
 {
-	int digit = (int)score;
-	std::vector<int> digits;
-	while (digit > 0)
-	{
-		digits.push_back(digit % 10);
-		digit = digit / 10;
-	}
-	auto s_iter = scores.end() - 2;
-	auto iter = digits.begin();
-	while (iter != digits.end() && s_iter != scores.begin())
-	{
-		(*s_iter).character = *iter;
-		iter++;
-		s_iter--;
-	}
+	updateScores(scores, score);
 }
 
 void Level::renderPipes()
@@ -170,18 +148,14 @@ void Level::renderPipes()
 
 void Level::renderScores()
 {
-	for (fontStruct pos : scores)
-	{
-		font.setX(pos.x);
-		font.setY(pos.y);
-		font.setCharacter(pos.character);
-		font.render();
-	}
+	renderScores(scores);
 }
 
 void Level::reset()
 {
+
 	bird.setY(0.0F);
+	score = 0.1f;
 	float xPos = PIPE_START_X_COOR;
 	auto iter = pipes.begin();
 	for (iter; iter != pipes.end(); )
@@ -196,6 +170,11 @@ void Level::reset()
 
 	}
 	isGameOver = false;
+
+	resetScores(scores);
+	createScores();
+
+	
 }
 
 bool Level::isCollision()
@@ -232,4 +211,70 @@ bool Level::isCollision()
 bool Level::gameOver()
 {
 	return isGameOver;
+}
+
+void Level::resetScores(std::vector<fontStruct>& scores)
+{
+	auto s_iter = scores.begin();
+	while (s_iter != scores.end())
+	{
+		s_iter = scores.erase(s_iter);
+	}
+}
+
+void Level::renderScores(std::vector<fontStruct>& scores)
+{
+	for (fontStruct pos : scores)
+	{
+		font.setX(pos.x);
+		font.setY(pos.y);
+		font.setCharacter(pos.character);
+		font.setWidth(pos.fontSize);
+		font.setHight(pos.fontSize);
+		font.render();
+	}
+}
+
+void Level::updateScores(std::vector<fontStruct>& scores, int score)
+{
+	int digit = (int)score;
+	std::vector<int> digits;
+	while (digit > 0)
+	{
+		digits.push_back(digit % 10);
+		digit = digit / 10;
+	}
+	auto s_iter = scores.end() - 2;
+	auto iter = digits.begin();
+	while (iter != digits.end() && s_iter != scores.begin())
+	{
+		(*s_iter).character = *iter;
+		iter++;
+		s_iter--;
+	}
+}
+
+void Level::createScores(std::vector<fontStruct>& scores, float X_POS, float Y_POS, float fontSize)
+{
+	float pos = X_POS;
+	for (int i = 0; i < FONT_LENGTH; i++)
+	{
+
+		if (i == FONT_LENGTH - 1)
+		{
+			scores.push_back({ pos, Y_POS, 10 , fontSize });
+		}
+		else if (i == FONT_LENGTH - 2)
+		{
+			scores.push_back({ pos, Y_POS, 0, fontSize });
+
+		}
+		else
+		{
+			scores.push_back({ pos, Y_POS, 24, fontSize });
+
+		}
+
+		pos += FONT_DISTANCE;
+	}
 }
