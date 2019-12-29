@@ -17,7 +17,7 @@ void Bird::update()
 {
 	if (KEY_DOWN(VK_SPACE)) 
 	{
-		delta = 8.0f;
+		delta = 9.5f;
 	}
 	else
 	{

@@ -30,6 +30,8 @@ public:
 	int getUniform(std::string name);
 	void setUniform1i(std::string name, int value);
 	void setUniform1f(std::string name, float value);
+	void setUniform2f(std::string name, float v0, float v1);
+
 	void setUniformMat4f(std::string name, const float* matrix);
 	void setUniform4f(std::string name, float v0, float v1, float v2, float v3);
 	void setUniformMat4f(std::string name, const glm::mat4& matrix);
@@ -79,4 +81,10 @@ inline void Shader::setUniform4f(std::string name, float v0, float v1, float v2,
 {
 	int location = getUniform(name);
 	GLCall(glUniform4f(location, v0, v1, v2, v3));
+}
+
+inline void Shader::setUniform2f(std::string name, float v0, float v1)
+{
+	int location = getUniform(name);
+	GLCall(glUniform2f(location, v0, v1));
 }

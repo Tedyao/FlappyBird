@@ -24,6 +24,14 @@ struct position
 	Direction direction;
 };
 
+struct fontStruct
+{
+	float x;
+	float y;
+	int character;
+
+};
+
 const float SPEED = 5.0f;
 const int WIDTH = 1280;
 const int HEIGHT = 720;
@@ -46,3 +54,12 @@ const float TOP_BOTTOM_DISTANCE = HEIGHT_F / 3.0F;
 const float BG_HEIGHT = HEIGHT_F;
 const float BG_WIDTH = BG_HEIGHT * 284.0F / 512.0F;
 const int BG_NUMBER = WIDTH_F / BG_WIDTH + 2;
+
+const int FONT_SIZE = BIRD_SIZE;
+
+const float SCORE_X_POSITION = WIDTH_F / 2.0F - 5 * FONT_SIZE;
+const float SCORE_Y_POSITION = HEIGHT_F / 2.0F - FONT_SIZE;
+const float FONT_DISTANCE = FONT_SIZE * 0.5;
+
+const int FONT_LENGTH = 6;
+

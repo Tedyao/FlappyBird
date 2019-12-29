@@ -4,6 +4,7 @@
 #include "Pipe.h"
 #include "vector"
 #include "Background.h"
+#include "Font.h"
 
 
 template<typename T>
@@ -29,10 +30,13 @@ class Level
 private:
 	std::vector<position> pipes;
 	std::vector<position> tiles;
+	std::vector<fontStruct> scores;
 	bool isGameOver;
 	Background bg;
 	Pipe pipe;
 	Bird bird;
+	Font font;
+	float score;
 public:
 	Level();
 	~Level();
@@ -42,8 +46,11 @@ public:
 	void renderBG();
 	void createBG();
 	void createPipes();
+	void createScores();
 	void updatePipes();
+	void updateScores();
 	void renderPipes();
+	void renderScores();
 	void reset();
 	bool isCollision();
 	bool gameOver();

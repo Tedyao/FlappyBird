@@ -30,7 +30,7 @@ int main(void)
 
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(WIDTH, HEIGHT, "Hello World", NULL, NULL);
+	window = glfwCreateWindow(WIDTH, HEIGHT, "Flappy Bird", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -39,8 +39,8 @@ int main(void)
 
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
-	glewExperimental = GL_TRUE;
-	std::cout << glGetString(GL_VERSION) << std::endl;
+	//glewExperimental = GL_TRUE;
+	//std::cout << glGetString(GL_VERSION) << std::endl;
 
 	glfwSwapInterval(1);
 	if (glewInit() != GLEW_OK)
@@ -54,7 +54,7 @@ int main(void)
 
 	Level level = Level();
 
-
+	int i = 0;
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
